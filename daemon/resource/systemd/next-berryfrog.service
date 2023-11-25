@@ -1,0 +1,15 @@
+[Unit]
+Description=Simple daemon template
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/next-berryfrog --config /etc/next-berryfrog/next-berryfrog.conf
+ExecReload=/bin/kill -HUP $MAINPID
+User=root
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=next-berryfrog
+
+[Install]
+WantedBy=multi-user.target
