@@ -6,25 +6,18 @@
 #include "command-line-parser.hpp"
 #include "daemon.hpp"
 #include "log.hpp"
-#include <mysql/mysql.h>
+#include "mysql.hpp"
 #include "../rc-switch/RCSwitch.h"
 
-MYSQL *mysql1;
 RCSwitch mySwitch;
 
-static char *database_host = NULL;
 static char *conf_file_name = NULL;
 static char *pid_file_name = NULL;
 static int pid_fd = -1;
 static char *app_name = NULL;
 static FILE *log_stream;
-static char *MySQLHost;
 
 int loop = 10;
-const char *dbhost = NULL;
-const char *dbname = NULL;
-const char *dbuser = NULL;
-const char *dbpass = NULL;
 int count, n, enabled;
 
 using namespace std;
@@ -35,6 +28,7 @@ void reload() {
 }
 
 int main(int argc, char** argv) {
+
     // Command line and config file example
     CommandLineParser commandLine(argc, argv);
     if (commandLine.cmdOptionExist("--config")) {

@@ -7,8 +7,8 @@ Type=simple
 ExecStart=/usr/bin/next-berryfrog --config /etc/next-berryfrog/next-berryfrog.conf
 ExecReload=/bin/kill -HUP $MAINPID
 User=root
-StandardOutput=syslog
-StandardError=syslog
+StandardOutput=/var/log/next-berryfrog
+StandardError=/var/log/next-berryfrog
 SyslogIdentifier=next-berryfrog
 
 [Install]
