@@ -33,3 +33,4 @@
 
 build
 !build.txt
+!build-dev.sh

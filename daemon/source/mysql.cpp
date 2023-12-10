@@ -1,55 +1,46 @@
 #include "../include/mysql.hpp"
 #include <mysql/mysql.h>
 #include <stdio.h>
-#include <libconfig.h>
+#include <string>
+
+#include "log.hpp"
 
 MYSQL *mysql1;
 
-static char *MySQLHost;
-static char *database_host = NULL;
-const char *dbhost = NULL;
-const char *dbname = NULL;
-const char *dbuser = NULL;
-const char *dbpass = NULL;
-
-config_t cfg, *cf;
-const config_setting_t *retries;
+// config_t cfg, *cf;
+// const config_setting_t *retries;
 
 /*
   CONNECT TO DATABASE ****************
 */
-void mysql_connect (void) {
+void mysqlConnect(const char *dbhost, const char *dbname, const char *dbuser, const char *dbpass) {
 
     //initialize MYSQL object for connections
     mysql1 = mysql_init(NULL);
 
     if(mysql1 == NULL) {
-        fprintf(stderr, "ABB : %s\n", mysql_error(mysql1));
+        LOGGER_ERROR("MySQL error: %s", mysql_error(mysql1));
         return;
     }
 
-	if (config_lookup_string(cf, "dbhost", &dbhost))
-	if (config_lookup_string(cf, "dbname", &dbname))
-	if (config_lookup_string(cf, "dbuser", &dbuser))
-    if (config_lookup_string(cf, "dbpass", &dbpass))
-
     //Connect to the database
     if(mysql_real_connect(mysql1, dbhost, dbuser, dbpass, dbname, 0, NULL, 0) == NULL) {
-        fprintf(stderr, "%s\n", mysql_error(mysql1));
+        LOGGER_ERROR("MySQL error: %s", mysql_error(mysql1));
     } else {
-        printf("Database connection to %s successful.\r\n",dbhost);
+        LOGGER_INFO("Database connection to %s successful.", dbhost);
     }
 }
 
 /*
   DISCONNECT FROM DATABASE ****************
 */
-void mysql_disconnect (void) {
+void mysqlDisconnect (void) {
+
     mysql_close(mysql1);
-    printf( "Disconnected from database.\r\n");
+    LOGGER_INFO("Disconnected from database.");
 }
 
-void mysql_write (int transmitter_id,int temp_dht_hic,int temp_dht_hif,int humidity_dht,int pressure_bmp,int altitude_bmp,int temp_bmp,int vcc_atmega,int vis_is,int uvindex_is) {
+void mysqlWrite (int transmitter_id,int temp_dht_hic,int temp_dht_hif,int humidity_dht,int pressure_bmp,int altitude_bmp,int temp_bmp,int vcc_atmega,int vis_is,int uvindex_is) {
    
 	float db_temp_dht_hic = (float) temp_dht_hic / 100;
 	float db_temp_dht_hif = (float) temp_dht_hif / 100;

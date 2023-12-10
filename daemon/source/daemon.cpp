@@ -22,8 +22,12 @@ bool Daemon::IsRunning() {
     return m_isRunning;
 }
 
+void Daemon::Quit() {
+    Daemon::instance().m_isRunning = false;
+}
+
 void Daemon::signalHandler(int signal) {
-    LOG_INFO("Interrup signal number [", signal, "] recived.");
+    LOGGER_INFO("Interrup signal number [", signal, "] recived.");
     switch (signal) {
         case SIGINT:
         case SIGTERM: {

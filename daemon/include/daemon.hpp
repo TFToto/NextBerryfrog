@@ -15,6 +15,8 @@ class Daemon {
 
     bool IsRunning();
 
+    void Quit();
+
    private:
     std::function<void()> m_reloadFunc;
     bool m_isRunning;

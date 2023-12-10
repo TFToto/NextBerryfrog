@@ -28,9 +28,6 @@ execute_process(COMMAND mysql_config --cflags
 execute_process(COMMAND mysql_config --libs
     OUTPUT_VARIABLE MYSQL_LIBS OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-# target_compile_options(cgm PUBLIC ${MYSQL_CFLAGS})
-# target_link_libraries(cgm ${MYSQL_LIBS})
-
 target_include_directories(next-berryfrog
     PRIVATE ${wiringPi_INCLUDE_DIRS}
     PRIVATE ${wiringPiDev_INCLUDE_DIRS}
