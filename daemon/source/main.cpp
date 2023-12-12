@@ -14,16 +14,8 @@
 #include "mysql.hpp"
 #include "../rc-switch/RCSwitch.h"
 
-// MYSQL *mysql1;
 RCSwitch mySwitch;
-
-static char *pid_file_name = NULL;
-static int pid_fd = -1;
-static char *app_name = NULL;
-static FILE *log_stream;
-
-int count, n, enabled;
-
+static char *appName = NULL;
 using namespace std;
 
 // This function will be called when the daemon receive a SIGHUP signal.
@@ -33,60 +25,7 @@ void reload() {
 
 int main(int argc, char** argv) {
 
-    // static struct option long_options[] = {
-	// 	{"conf_file", required_argument, 0, 'c'},
-	// 	{"test_conf", required_argument, 0, 't'},
-	// 	{"log_file", required_argument, 0, 'l'},
-	// 	{"help", no_argument, 0, 'h'},
-	// 	{"daemon", no_argument, 0, 'd'},
-	// 	{"pid_file", required_argument, 0, 'p'},
-	// 	{NULL, 0, 0, 0}
-	// };
-
-    //Init some variables
-	// int value, option_index = 0, ret;
-	// char *log_file_name = NULL;
-	// int start_daemonized = 0;
-	//Default PIN for 433MHz receiver data
-	// int PIN = 2;
-
-	// app_name = argv[0];
-
-    /* Open system log and write message to it */
-	// openlog(argv[0], LOG_PID|LOG_CONS, LOG_DAEMON);
-	// syslog(LOG_INFO, "Started %s", app_name);
-
-    // 	/* Try to open log file to this daemon */
-	// if(log_file_name != NULL) {
-	// 	log_stream = fopen(log_file_name, "a+");
-	// 	if (log_stream == NULL)
-	// 	{
-	// 		syslog(LOG_ERR, "Can not open log file: %s, error: %s",
-	// 			log_file_name, strerror(errno));
-	// 		log_stream = stdout;
-	// 	}
-	// } else {
-	// 	log_stream = stdout;
-	// }
-
-    /* Read configuration from config file */
-	// read_conf_file(0);
-
-	// if (config_lookup_int(cf, "loop", &loop));
-	// if (config_lookup_int(cf, "rx_PIN", &rx_PIN));
-
-    //Init the wiringPi interface
-	// if(wiringPiSetup() == -1) {
-    //    printf("wiringPiSetup failed, exiting...");
-    //    return 0;
-    // }
-
-    // int pulseLength = 0;
-    // if (argv[1] != NULL) pulseLength = atoi(argv[1]);
-
-    // mySwitch = RCSwitch();
-	// if (pulseLength != 0) mySwitch.setPulseLength(pulseLength);
-    // mySwitch.enableReceive(PIN);  // Receiver on interrupt 0 => that is pin #2
+	appName = argv[0];
 
     // Command line and config file example
     CommandLineParser commandLine(argc, argv);
@@ -149,20 +88,21 @@ int main(int argc, char** argv) {
     LOGGER_INFO("rx_PIN is ", rx_PIN);
      mySwitch.enableReceive(rx_PIN);  // Receiver on interrupt 0 => that is pin #2
 
-    LOGGER_INFO("Next-Berryfrog ready to receive");
+    LOGGER_INFO("%s ready to receive", appName);
 
     while (daemon.IsRunning()) {
 
         if (mySwitch.available()) {
     
-            unsigned long value = mySwitch.getReceivedValue();
+            // unsigned long value = mySwitch.getReceivedValue();
+            int value = mySwitch.getReceivedValue();
         
             if (value == 0) {
                 LOGGER_WARNING("Unknown encoding");
             } else {
 
                 // printf("Received %lu\n", mySwitch.getReceivedValue() );
-                				int transmitter_id = value/10000000;
+                int transmitter_id = value/10000000;
 				int sensor_id = (value/100000)%100;
 				int measured_value = value%10000;
 
@@ -280,5 +220,5 @@ int main(int argc, char** argv) {
         // std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
-    LOGGER_INFO("The next-berryfrog process ended gracefully.");
+    LOGGER_INFO("The %s process ended gracefully.", appName);
 }

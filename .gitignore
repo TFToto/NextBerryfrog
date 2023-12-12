@@ -32,5 +32,5 @@
 *.app
 
 build
-!build.txt
-!build-dev.sh
+!build/build.txt
+!build/build-dev.sh
