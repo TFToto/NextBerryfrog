@@ -40,14 +40,26 @@ void mysqlDisconnect (void) {
     LOGGER_INFO("Disconnected from database.");
 }
 
-void mysqlWrite (int transmitter_id,int temp_dht_hic,int temp_dht_hif,int humidity_dht,int pressure_bmp,int altitude_bmp,int temp_bmp,int vcc_atmega,int vis_is,int uvindex_is) {
+void mysqlWrite (
+    int transmitter_id,
+    int temp_dht_hic,
+    int temp_dht_hif,
+    int humidity_dht,
+    int pressure_bmp,
+    int altitude_bmp,
+    int temp_bmp,
+    int vcc_atmega,
+    int vis_is,
+    int uvindex_is,
+    float correctionSubtractingCelsius
+) {
    
-	float db_temp_dht_hic = (float) (temp_dht_hic / 100) -50.0;
+	float db_temp_dht_hic = (float) temp_dht_hic / 100;
 	float db_temp_dht_hif = (float) temp_dht_hif / 100;
 	float db_humidity_dht = (float) humidity_dht / 100;
 	float db_pressure_bmp = (float) pressure_bmp / 10;
 	float db_altitude_bmp = (float) altitude_bmp / 10;
-	float db_temp_bmp     = (float) (temp_bmp / 100) -50.0;
+	float db_temp_bmp     = (float) temp_bmp / 100;
 	float db_vcc_atmega   = (float) vcc_atmega / 1000;
 	float db_uvindex_is   = (float) uvindex_is / 1000;
 
@@ -71,12 +83,12 @@ void mysqlWrite (int transmitter_id,int temp_dht_hic,int temp_dht_hif,int humidi
 			"INSERT INTO measurements (transmitter_id,vcc_atmega,temp_dht_hic,temp_dht_hif,humidity_dht,pressure_bmp,altitude_bmp,temp_bmp,vis_is,uvindex_is) VALUES (%i,%.3f,%.2f,%.2f,%.2f,%.1f,%.1f,%.2f,%i,%.3f)",
 					transmitter_id,
 					db_vcc_atmega,
-					db_temp_dht_hic,
+					(db_temp_dht_hic - correctionSubtractingCelsius),
 					db_temp_dht_hif,
 					db_humidity_dht,
 					db_pressure_bmp,
 					db_altitude_bmp,
-					db_temp_bmp,
+					(db_temp_bmp - correctionSubtractingCelsius),
 					vis_is,
 					db_uvindex_is
 		);

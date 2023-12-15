@@ -90,9 +90,9 @@ int main(int argc, char** argv) {
 
     LOGGER_INFO("%s ready to receive", appName);
 
-    // int correctionSubtractingCelsius{};
-    // config.lookupValue("correctionSubtractingCelsius", correctionSubtractingCelsius);
-    // LOGGER_INFO("correctionSubtractingCelsius ", correctionSubtractingCelsius);
+    float correctionSubtractingCelsius{};
+    config.lookupValue("correctionSubtractingCelsius", correctionSubtractingCelsius);
+    LOGGER_INFO("correctionSubtractingCelsius ", correctionSubtractingCelsius);
 
     while (daemon.IsRunning()) {
 
@@ -196,7 +196,7 @@ int main(int argc, char** argv) {
                     const char * pass = dbpass.c_str();
 
                     mysqlConnect(host, name, user, pass);
-                    mysqlWrite(check10,temp_dht_hic,temp_dht_hif,humidity_dht,pressure_bmp,altitude_bmp,temp_bmp,vcc_atmega,vis_is,uvindex_is);						
+                    mysqlWrite(check10,temp_dht_hic,temp_dht_hif,humidity_dht,pressure_bmp,altitude_bmp,temp_bmp,vcc_atmega,vis_is,uvindex_is,correctionSubtractingCelsius);						
 					mysqlDisconnect();
 
 					//Reset checks for next loop
