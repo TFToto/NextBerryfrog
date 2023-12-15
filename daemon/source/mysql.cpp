@@ -42,12 +42,12 @@ void mysqlDisconnect (void) {
 
 void mysqlWrite (int transmitter_id,int temp_dht_hic,int temp_dht_hif,int humidity_dht,int pressure_bmp,int altitude_bmp,int temp_bmp,int vcc_atmega,int vis_is,int uvindex_is) {
    
-	float db_temp_dht_hic = (float) temp_dht_hic / 100;
+	float db_temp_dht_hic = (float) (temp_dht_hic / 100) -50.0;
 	float db_temp_dht_hif = (float) temp_dht_hif / 100;
 	float db_humidity_dht = (float) humidity_dht / 100;
 	float db_pressure_bmp = (float) pressure_bmp / 10;
 	float db_altitude_bmp = (float) altitude_bmp / 10;
-	float db_temp_bmp     = (float) temp_bmp / 100;
+	float db_temp_bmp     = (float) (temp_bmp / 100) -50.0;
 	float db_vcc_atmega   = (float) vcc_atmega / 1000;
 	float db_uvindex_is   = (float) uvindex_is / 1000;
 

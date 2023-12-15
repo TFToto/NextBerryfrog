@@ -90,6 +90,10 @@ int main(int argc, char** argv) {
 
     LOGGER_INFO("%s ready to receive", appName);
 
+    // int correctionSubtractingCelsius{};
+    // config.lookupValue("correctionSubtractingCelsius", correctionSubtractingCelsius);
+    // LOGGER_INFO("correctionSubtractingCelsius ", correctionSubtractingCelsius);
+
     while (daemon.IsRunning()) {
 
         if (mySwitch.available()) {
